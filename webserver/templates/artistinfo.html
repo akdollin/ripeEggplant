@@ -25,22 +25,22 @@
       <table>
       {% for artistfirstName, artistlastName, DOB, artistid in artistinfoList %}
         <tr>
-          <td> <a href="movieinfo?movid={{movid}}">{{artistfirstName}}</td><td>{{artistlastName}}</td><td>{{ DOB }}</td><td>{{ artistid }}</td>
+          <td>Name: <a href="artistinfo?artistid={{artistid}}">{{artistfirstName}} {{artistlastName}}</td><td>Birthday: {{ DOB }}</td>
         </tr>
       {% endfor %}
       </table>
      </div>
 
      <div>
-      <!-- <table> -->
+      <table>
         <p><b>Movies They Are In: </b></p><p></p>
 
       {% for title, movid in artistinfoList1 %}
         <tr>
-          <td>{{title}}</td>
+          <td><a href="movieinfo?movid={{movid}}">{{title}}</td>
         </tr>
       {% endfor %}
       </table>
     </div></div>
 
-<a href="/home"><p>Back to home.</a></p>
+<a href="/home"><p>Back to home</a></p>

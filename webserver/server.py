@@ -262,17 +262,19 @@ def searchhistory():
     searchartList.append((result2[0]+' '+result2[1], result2[2], result2[3]))
   cursor2.close()
 
+  try:
+    if request.method == 'POST':
+      clear = request.form['clear']
+      if clear == 'Clear History':
+        g.conn.execute(text('DELETE from searchHistory_Movies s WHERE s.userid= :name'), name= userid)
+        g.conn.execute(text('DELETE from searchHistory_Artists s WHERE s.userid= :name'), name= userid)
+        return redirect("/searchhistory")
+  except:
+    import traceback; traceback.print_exc()
+
+
   context = dict(searchmovList=searchmovList, searchartList = searchartList, username = userid)
   return render_template("searchhistory.html", **context)
-  cursor1 = g.conn.execute(text('Select m.title, s.movTimeSearch FROM Movies m, searchHistory_Movies s WHERE s.userid= :name AND s.movid=m.movid ORDER BY s.movTimeSearch DESC'), name = userid)
-  searchList = []
-  searchList.append(('hello','29'))
-  for result in cursor1:
-    searchList.append((result.title, result.movTimeSearch))
-  cursor1.close()
-
-  context = dict(searchList=searchList, username = userid)
-  return render_template("searchHistory.html", **context)
 
 @app.route('/rate', methods=['GET', 'POST'])
 def rate():
@@ -345,9 +347,11 @@ def movieinfo():
       maxPos = g.conn.execute(text('SELECT max(position) FROM Queue q  WHERE q.userid= :userid'), userid = userid)
       newmax = maxPos.fetchone()[0] + 1
     
-      # print "movid = %s\n" % movid
-      g.conn.execute(text('insert into queue values (:userid, :movid, :newmax, :date)'), userid=userid, movid=movid, newmax=newmax, date = date)
-    return redirect("/home") 
+      try:
+        g.conn.execute(text('insert into queue values (:userid, :movid, :newmax, :date)'), userid=userid, movid=movid, newmax=newmax, date = date)
+      except:
+        return redirect("/home")
+
 
   import datetime;  
   date = datetime.datetime.now()

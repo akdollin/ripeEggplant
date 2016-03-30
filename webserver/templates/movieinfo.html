@@ -26,11 +26,11 @@
       <table>
 
       {% for title, year, length, imdbrating, movid in movieinfoList %}
-      <form method="POST" action="/movieinfo"> <input type="submit" name="add" value="Add To Queue">
+      <form method="POST" action="/movieinfo?movid={{movid}}"> <input type="submit" name="add" value="Add To Queue">
         <input type="hidden" name="movid" value="{{ movid }}"></form>
 
         <tr>
-          <td><!-- <a href="movieinfo?movid={{movid}}"> -->{{title}}</td><td>{{ year }}</td><td>{{ length }}</td><td>{{ imdbrating }}</td>
+          <td>Title: <a href="movieinfo?movid={{movid}}">{{title}}</td><td>Year: {{ year }}</td><td>Length (min): {{ length }}</td><td>IMDBRating: {{ imdbrating }}</td>
         </tr>
       {% endfor %}
 
